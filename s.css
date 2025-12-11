@@ -1,0 +1,278 @@
+/*! locomotive-scroll v3.5.4 | MIT License | https://github.com/locomotivemtl/locomotive-scroll */
+html.has-scroll-smooth {
+  overflow: hidden; }
+
+html.has-scroll-dragging {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none; }
+
+.has-scroll-smooth body {
+  overflow: hidden; }
+
+.has-scroll-smooth [data-scroll-container] {
+  min-height: 100vh; }
+
+.c-scrollbar {
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 11px;
+  height: 100vh;
+  transform-origin: center right;
+  transition: transform 0.3s, opacity 0.3s;
+  opacity: 0; }
+  .c-scrollbar:hover {
+    transform: scaleX(1.45); }
+  .c-scrollbar:hover, .has-scroll-scrolling .c-scrollbar, .has-scroll-dragging .c-scrollbar {
+    opacity: 1; }
+
+.c-scrollbar_thumb {
+  position: absolute;
+  top: 0;
+  right: 0;
+  background-color: black;
+  opacity: 0.5;
+  width: 7px;
+  border-radius: 10px;
+  margin: 2px;
+  cursor: -webkit-grab;
+  cursor: grab; }
+  .has-scroll-dragging .c-scrollbar_thumb {
+    cursor: -webkit-grabbing;
+    cursor: grabbing; }/* Base styles from user input, modified for responsiveness */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            /* Using 'Inter' as a replacement for 'gilroy' for broad compatibility */
+            font-family: 'Inter', sans-serif; 
+        }
+
+        html, body {
+            height: 100%;
+            width: 100%;
+        }
+
+        #main {
+            position: relative;
+            overflow-x: hidden; /* Only hide horizontal overflow */
+        }
+
+        /* Full viewport height for all pages */
+        #page, #page1, #page2, #page3 {
+            position: relative;
+            height: 100vh;
+            width: 100vw;
+            background-color: #f1f1f1;
+            /* Ensure text stays within padding boundaries */
+            padding: 20px; 
+        }
+        
+        /* Canvas is kept relative for the visual effect */
+        canvas {
+            position: relative;
+            z-index: 9;
+            width: 100%;
+            height: 100%;
+            display: block;
+        }
+
+        /* Loop Section */
+        #loop {
+            display: flex;
+            position: absolute;
+            top: 35%; /* Adjusted for better mobile centering */
+            height: 25%;
+            width: 100%;
+            font-size: 80px; /* Base size */
+            white-space: nowrap;
+            overflow: hidden; /* Hide overflow from animation */
+            z-index: 10;
+        }
+
+        #loop > h1 {
+            font-weight: 400;
+            animation-name: anim;
+            animation-duration: 15s;
+            animation-timing-function: linear;
+            animation-iteration-count: infinite;
+            padding: 0 20px; /* Added spacing between repeated content */
+        }
+
+        #loop > h1 > span {
+            -webkit-text-stroke: 1.2px #000;
+            color: transparent;
+            font-weight: 500;
+        }
+
+        @keyframes anim {
+            0% {
+                transform: translateX(0%);
+            }
+            100% {
+                transform: translateX(-100%);
+            }
+        }
+
+        /* Navigation */
+        #nav {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: 70px;
+            width: 100%;
+            position: fixed;
+            z-index: 99;
+            padding: 0 5%; /* Using percentage for responsive padding */
+            background-color: rgba(241, 241, 241, 0.9); /* Semi-transparent background for fixed header */
+        }
+
+        #nav > h3 {
+            font-weight: 600;
+            font-size: 18px;
+        }
+
+        #nav > button {
+            padding: 8px 16px;
+            border-radius: 50px;
+            background-color: #000;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        #nav > button:hover {
+            background-color: #333;
+        }
+
+        /* Page 0 Content */
+        #page > h3 {
+            position: absolute;
+            top: 60%;
+            font-weight: 400;
+            color: #7c7c7c;
+            left: 5%;
+            right: 5%;
+        }
+
+        #page > h4 {
+            position: absolute;
+            top: 68%;
+            left: 5%;
+            right: 5%;
+            font-weight: 600;
+        }
+
+        /* Page 1, 2, 3 Content - Refactored for Flexbox/Relative Positioning on Mobile */
+        
+        /* Default: Mobile-First (Centered, Stacked) */
+        #page1 > #right-text,
+        #page1 > #left-text,
+        #page2 > #text1,
+        #page2 > #text2,
+        #page3 > #text3 {
+            position: static; /* Remove absolute positioning */
+            text-align: center;
+            margin: 40px auto;
+            max-width: 90%;
+        }
+
+        #page1 > #right-text {
+            padding-top: 15vh; /* Push content down slightly */
+        }
+        
+        #page1 > #right-text > h1,
+        #page1 > #left-text > h1,
+        #page2 > #text1 > h1,
+        #page3 > #text3 > h1 {
+            font-size: 32px; /* Smaller font for mobile */
+            line-height: 1.3;
+        }
+
+        /* Tablet/Small Desktop (Sm: 640px) */
+        @media (min-width: 640px) {
+            #loop {
+                font-size: 100px;
+            }
+            
+            #page1 > #right-text,
+            #page1 > #left-text,
+            #page2 > #text1,
+            #page2 > #text2,
+            #page3 > #text3 {
+                max-width: 70%;
+            }
+
+            #page1 > #right-text > h1,
+            #page1 > #left-text > h1,
+            #page2 > #text1 > h1,
+            #page3 > #text3 > h1 {
+                font-size: 40px; 
+            }
+        }
+
+        /* Desktop (Lg: 1024px) - Revert to original absolute/split layout */
+        @media (min-width: 1024px) {
+            #loop {
+                top: 30%;
+                font-size: 100px; /* Original large font size */
+            }
+
+            #page > h3 {
+                top: 55%;
+                left: 5%;
+            }
+            #page > h4 {
+                top: 62%;
+                left: 25%;
+            }
+
+            /* Page 1 Desktop Layout */
+            #page1 > #right-text {
+                position: absolute;
+                top: 30%;
+                left: 10%;
+                text-align: left;
+                padding-top: 0;
+            }
+            #page1 > #left-text {
+                position: absolute;
+                top: 50%;
+                right: 10%;
+                text-align: end;
+            }
+            #page1 > #right-text > h1,
+            #page1 > #left-text > h1 {
+                font-size: 50px;
+            }
+
+            /* Page 2 Desktop Layout */
+            #page2 > #text1 {
+                position: absolute;
+                top: 30%;
+                left: 10%;
+                text-align: left;
+            }
+            #page2 > #text1 > h1 {
+                font-size: 60px;
+            }
+            #page2 > #text2 {
+                position: absolute;
+                top: 55%;
+                right: 10%;
+                text-align: end;
+            }
+
+            /* Page 3 Desktop Layout */
+            #page3 > #text3 {
+                position: absolute;
+                top: 40%;
+                right: 10%;
+                text-align: end;
+            }
+            #page3 > #text3 > h1 {
+                font-size: 70px;
+            }
+        }
